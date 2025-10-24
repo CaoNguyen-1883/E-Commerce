@@ -173,7 +173,7 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.<Map<String, String>>builder()
                         .success(false)
                         .message("Validation failed")
-                        .data(errors)
+                        .error(errors)
                         .statusCode(HttpStatus.BAD_REQUEST.value())
                         .timestamp(java.time.LocalDateTime.now())
                         .path(request.getRequestURI())

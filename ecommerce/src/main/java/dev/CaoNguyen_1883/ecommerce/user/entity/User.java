@@ -9,28 +9,36 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "users", indexes = {
+        @Index(name = "idx_email", columnList = "email"),
+        @Index(name = "idx_provider", columnList = "provider,providerId")
+})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class User extends BaseEntity {
-    @Column(nullable = false)
+
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(length = 100)
     private String fullName;
 
+    @Column(nullable = true) // Có thể null với OAuth
     private String password;
 
     private String avatarUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AuthProvider provider;
+    @Builder.Default
+    private AuthProvider provider = AuthProvider.LOCAL;
 
-    private String providerId;
+    private String providerId; // ID từ Google/Facebook
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -39,8 +47,11 @@ public class User extends BaseEntity {
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
+    @Column(length = 15)
     private String phone;
 
+    @Column(nullable = false)
+    @Builder.Default
     private boolean emailVerified = false;
 
     // Helper methods

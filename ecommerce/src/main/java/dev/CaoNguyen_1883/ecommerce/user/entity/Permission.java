@@ -5,15 +5,16 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "permissions")
+@Table(name = "permissions", indexes = @Index(name = "idx_permission_name", columnList = "name"))
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Permission extends BaseEntity {
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 100)
     private String name;
 
+    @Column(length = 255)
     private String description;
 }
