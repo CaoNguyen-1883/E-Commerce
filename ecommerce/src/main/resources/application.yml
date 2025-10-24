@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+app:
+  redis:
+    namespace: ecommerce
+
+spring:
+  profiles:
+    active: dev
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      timeout: 3000
+
+  application:
+    name: Ecommerce
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/ecommerce_db}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:default}
+            client-secret: ${GOOGLE_CLIENT_SECRET:default}
+            scope:
+              - email
+              - profile
+          github:
+            client-id: ${GITHUB_CLIENT_ID:default}
+            client-secret: ${GITHUB_CLIENT_SECRET:default}
+            scope:
+              - user:email
+              - read:user
+
+
+#logging:
+#  level:
+#    dev.CaoNguyen_1883.ecommerce.common.security: DEBUG
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-expiration: 900000    # 15 minutes
+  refresh-token-expiration: 2592000000 # 30 days
