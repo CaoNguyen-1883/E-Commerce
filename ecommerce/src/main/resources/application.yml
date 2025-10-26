@@ -4,8 +4,20 @@ server:
 app:
   redis:
     namespace: ecommerce
-
+  seed:
+    enabled: true        # Enable/disable seeding
+    force-reseed: false  # Force reseed even if already seeded
+    test-users: true  # Set false in production
 spring:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    display-request-duration: true
+    disable-swagger-default-url: true
+  show-actuator: false
   profiles:
     active: dev
   data:

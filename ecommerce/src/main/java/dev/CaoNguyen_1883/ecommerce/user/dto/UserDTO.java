@@ -1,5 +1,6 @@
 package dev.CaoNguyen_1883.ecommerce.user.dto;
 
+import dev.CaoNguyen_1883.ecommerce.common.enums.AuthProvider;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,14 +11,17 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class RoleDTO {
+public class UserDTO {
     private UUID id;
-    private String name;
-    private String description;
-    private Set<PermissionDTO> permissions;
+    private String email;
+    private String fullName;
+    private String avatarUrl;
+    private AuthProvider provider;
+    private Set<RoleDTO> roles;
+    private String phone;
+    private boolean emailVerified;
     private LocalDateTime createdAt;
-    private String createdBy;
 }

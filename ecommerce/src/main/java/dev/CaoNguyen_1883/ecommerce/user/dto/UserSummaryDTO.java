@@ -10,14 +10,16 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class RoleDTO {
+public class UserSummaryDTO {
     private UUID id;
-    private String name;
-    private String description;
-    private Set<PermissionDTO> permissions;
+    private String email;
+    private String fullName;
+    private String avatarUrl;
+    private Set<String> roleNames;
+    private boolean emailVerified;
     private LocalDateTime createdAt;
-    private String createdBy;
 }
+

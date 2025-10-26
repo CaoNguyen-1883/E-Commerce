@@ -1,23 +1,23 @@
 package dev.CaoNguyen_1883.ecommerce.user.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class RoleDTO {
-    private UUID id;
+public class RoleRequest {
+    @NotBlank(message = "Role name is required")
     private String name;
+
     private String description;
-    private Set<PermissionDTO> permissions;
-    private LocalDateTime createdAt;
-    private String createdBy;
+
+    private Set<UUID> permissionIds;
 }

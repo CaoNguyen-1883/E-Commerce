@@ -14,8 +14,27 @@ import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
 
+
     Optional<User> findByEmail(String email);
 
-    Boolean existsByEmail(String email);
+    boolean existsByEmail(String email);
+
+    @Query("SELECT u FROM User u WHERE u.isActive = true")
+    Page<User> findAllActive(Pageable pageable);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.id = :id AND u.isActive = true")
+    Optional<User> findByIdWithRoles(@Param("id") UUID id);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email = :email AND u.isActive = true")
+    Optional<User> findByEmailWithRoles(@Param("email") String email);
+
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName AND u.isActive = true")
+    Page<User> findByRoleName(@Param("roleName") String roleName, Pageable pageable);
+
+    @Query("SELECT u FROM User u WHERE " +
+            "(LOWER(u.email) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(u.fullName) LIKE LOWER(CONCAT('%', :keyword, '%'))) AND " +
+            "u.isActive = true")
+    Page<User> searchUsers(@Param("keyword") String keyword, Pageable pageable);
 
 }

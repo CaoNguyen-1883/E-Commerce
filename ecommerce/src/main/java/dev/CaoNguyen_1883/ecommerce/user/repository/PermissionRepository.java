@@ -14,13 +14,13 @@ import java.util.UUID;
 
 public interface PermissionRepository extends JpaRepository<Permission, UUID> {
     Optional<Permission> findByName(String name);
-    Boolean existsByName(String name);
 
-    @Query("SELECT p FROM Permission p WHERE p.name IN :names")
-    Set<Permission> findByNameIn(@Param("names") Set<String> names);
+    boolean existsByName(String name);
 
+    @Query("SELECT p FROM Permission p WHERE p.isActive = true ORDER BY p.name")
+    Set<Permission> findAllActive();
 
-    // PermissionRepository.java - Thêm method
-    Page<Permission> findAll(Pageable pageable);
+    @Query("SELECT p FROM Permission  p WHERE p.id IN :ids AND p.isActive = true")
+    Set<Permission> findAllByIdInAndActive(Set<UUID> ids);
 
 }
