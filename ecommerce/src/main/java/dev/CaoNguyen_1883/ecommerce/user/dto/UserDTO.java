@@ -1,6 +1,6 @@
 package dev.CaoNguyen_1883.ecommerce.user.dto;
 
-import dev.CaoNguyen_1883.ecommerce.common.enums.AuthProvider;
+import dev.CaoNguyen_1883.ecommerce.user.entity.AuthProvider;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

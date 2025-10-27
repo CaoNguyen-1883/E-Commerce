@@ -1,7 +1,6 @@
 package dev.CaoNguyen_1883.ecommerce.user.entity;
 
 import dev.CaoNguyen_1883.ecommerce.common.entity.BaseEntity;
-import dev.CaoNguyen_1883.ecommerce.common.enums.AuthProvider;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

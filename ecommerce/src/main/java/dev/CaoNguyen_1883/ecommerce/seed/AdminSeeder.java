@@ -1,6 +1,6 @@
 package dev.CaoNguyen_1883.ecommerce.seed;
 
-import dev.CaoNguyen_1883.ecommerce.common.enums.AuthProvider;
+import dev.CaoNguyen_1883.ecommerce.user.entity.AuthProvider;
 import dev.CaoNguyen_1883.ecommerce.seed.constants.RoleConstants;
 import dev.CaoNguyen_1883.ecommerce.user.entity.Role;
 import dev.CaoNguyen_1883.ecommerce.user.entity.User;

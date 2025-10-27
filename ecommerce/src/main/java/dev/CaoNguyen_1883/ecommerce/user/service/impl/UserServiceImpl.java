@@ -1,10 +1,11 @@
 package dev.CaoNguyen_1883.ecommerce.user.service.impl;
 
-import dev.CaoNguyen_1883.ecommerce.common.enums.AuthProvider;
+
 import dev.CaoNguyen_1883.ecommerce.common.exception.BadRequestException;
 import dev.CaoNguyen_1883.ecommerce.common.exception.DuplicateResourceException;
 import dev.CaoNguyen_1883.ecommerce.common.exception.ResourceNotFoundException;
 import dev.CaoNguyen_1883.ecommerce.user.dto.*;
+import dev.CaoNguyen_1883.ecommerce.user.entity.AuthProvider;
 import dev.CaoNguyen_1883.ecommerce.user.entity.Role;
 import dev.CaoNguyen_1883.ecommerce.user.entity.User;
 import dev.CaoNguyen_1883.ecommerce.user.mapper.UserMapper;

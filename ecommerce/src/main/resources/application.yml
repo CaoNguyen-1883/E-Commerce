@@ -1,9 +1,13 @@
 server:
   port: 8080
-
+  error:
+    include-message: always
+    include-binding-errors: always
 app:
-  redis:
-    namespace: ecommerce
+  jwt:
+    secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+    access-token-expiration: 900000  # 15 minutes in milliseconds
+    refresh-token-expiration: 604800000 # 7 days in milliseconds
   seed:
     enabled: true        # Enable/disable seeding
     force-reseed: false  # Force reseed even if already seeded
@@ -27,7 +31,6 @@ spring:
       password:
       database: 0
       timeout: 3000
-
   application:
     name: Ecommerce
   datasource:
@@ -48,19 +51,19 @@ spring:
             scope:
               - email
               - profile
-          github:
-            client-id: ${GITHUB_CLIENT_ID:default}
-            client-secret: ${GITHUB_CLIENT_SECRET:default}
-            scope:
-              - user:email
-              - read:user
-
-
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
 #logging:
 #  level:
 #    dev.CaoNguyen_1883.ecommerce.common.security: DEBUG
 
-jwt:
-  secret: ${JWT_SECRET}
-  access-token-expiration: 900000    # 15 minutes
-  refresh-token-expiration: 2592000000 # 30 days
