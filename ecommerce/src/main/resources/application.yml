@@ -63,6 +63,8 @@ spring:
       write-dates-as-timestamps: false
     deserialization:
       fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+
 #logging:
 #  level:
 #    dev.CaoNguyen_1883.ecommerce.common.security: DEBUG

@@ -21,9 +21,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         log.debug("Loading user by email: {}", email);
 
-        User user = userRepository.findByEmailWithRoles(email)
+        // Use new method that fetches permissions eagerly
+        User user = userRepository.findByEmailWithRolesAndPermissions(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
+        log.debug("User loaded successfully with {} roles", user.getRoles().size());
 
         return new CustomUserDetails(user);
     }

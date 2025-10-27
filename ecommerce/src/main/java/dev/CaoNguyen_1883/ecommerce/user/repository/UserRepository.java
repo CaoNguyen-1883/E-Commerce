@@ -32,6 +32,12 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email = :email AND u.isActive = true")
     Optional<User> findByEmailWithRoles(@Param("email") String email);
 
+    @Query("SELECT DISTINCT u FROM User u " +
+            "LEFT JOIN FETCH u.roles r " +
+            "LEFT JOIN FETCH r.permissions " +
+            "WHERE u.email = :email AND u.isActive = true")
+    Optional<User> findByEmailWithRolesAndPermissions(@Param("email") String email);
+
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName AND u.isActive = true")
     Page<User> findByRoleName(@Param("roleName") String roleName, Pageable pageable);
 
