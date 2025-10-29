@@ -7,6 +7,7 @@ import dev.CaoNguyen_1883.ecommerce.auth.dto.RefreshTokenRequest;
 import dev.CaoNguyen_1883.ecommerce.auth.dto.RegisterRequest;
 import dev.CaoNguyen_1883.ecommerce.auth.security.CustomUserDetails;
 import dev.CaoNguyen_1883.ecommerce.auth.service.IAuthService;
+import dev.CaoNguyen_1883.ecommerce.common.exception.UnauthorizedException;
 import dev.CaoNguyen_1883.ecommerce.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,6 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -122,13 +124,7 @@ public class AuthController {
             )
     })
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<AuthResponse.UserInfo>> getCurrentUser() {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
+    public ResponseEntity<ApiResponse<AuthResponse.UserInfo>> getCurrentUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
 
         AuthResponse.UserInfo userInfo = AuthResponse.UserInfo.builder()
                 .id(userDetails.getId())
