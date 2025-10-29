@@ -90,10 +90,10 @@ public class ProductController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductDto>> getProductById(@PathVariable UUID id) {
-        ProductDto product = productService.getProductById(id);
-
         // Increment view count
         productService.incrementViewCount(id);
+
+        ProductDto product = productService.getProductById(id);
 
         return ResponseEntity.ok(ApiResponse.success("Product retrieved successfully", product));
     }

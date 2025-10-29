@@ -202,7 +202,8 @@ public class ProductServiceImpl implements IProductService {
         // Update other fields
         if (request.getName() != null) {
             product.setName(request.getName());
-            product.setSlug(generateSlug(request.getName()));
+            //Do not update the slug - keep the old URL for SEO
+//            product.setSlug(generateSlug(request.getName()));
         }
         if (request.getDescription() != null) product.setDescription(request.getDescription());
         if (request.getShortDescription() != null) product.setShortDescription(request.getShortDescription());
