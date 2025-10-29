@@ -1,5 +1,6 @@
 package dev.CaoNguyen_1883.ecommerce.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.CaoNguyen_1883.ecommerce.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

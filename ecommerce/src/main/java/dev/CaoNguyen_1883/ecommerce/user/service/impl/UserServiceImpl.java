@@ -150,6 +150,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @CacheEvict(value = "users", allEntries = true)
+    @Transactional
     public UserDTO assignRoles(UUID userId, Set<UUID> roleIds) {
         log.info("Assigning roles to user id: {}", userId);
 
@@ -160,7 +161,7 @@ public class UserServiceImpl implements IUserService {
         if (roles.size() != roleIds.size()) {
             throw new BadRequestException("Some role IDs are invalid or inactive");
         }
-
+        roles.forEach(r -> log.info("role: {}", r.getName()));
         user.getRoles().addAll(roles);
         User updated = userRepository.save(user);
 
