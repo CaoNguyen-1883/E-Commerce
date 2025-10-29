@@ -84,19 +84,22 @@ public class AuthServiceImpl implements IAuthService {
         log.info("User attempting to login: {}, {}", request.getEmail(), request.getPassword());
 
         // Authenticate user
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        request.getEmail(),
-//                        request.getPassword()
-//                )
-//        );
+        // authenticate() call loadUserByUsername
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
 
         // Load user with roles
         User user = userRepository.findByEmailWithRoles(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BadRequestException("Wrong password");
-        }
+
+        //Manual code
+//        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+//            throw new BadRequestException("Wrong password");
+//        }
         // Check if user is active
         if (!user.getIsActive()) {
             throw new BadRequestException("Account is disabled. Please contact support.");
