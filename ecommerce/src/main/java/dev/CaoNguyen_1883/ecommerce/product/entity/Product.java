@@ -131,4 +131,12 @@ public class Product extends BaseEntity {
     public boolean hasStock() {
         return variants.stream().anyMatch(v -> v.getStock() > 0);
     }
+
+    public void setAverageRating(Long averageRating) {
+        this.averageRating = BigDecimal.valueOf(averageRating);
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = BigDecimal.valueOf(averageRating);
+    }
 }
