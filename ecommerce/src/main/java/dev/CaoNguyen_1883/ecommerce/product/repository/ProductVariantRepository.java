@@ -4,6 +4,7 @@ import dev.CaoNguyen_1883.ecommerce.product.entity.ProductVariant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,5 +28,10 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
     @Query("SELECT v FROM ProductVariant v " +
             "WHERE v.product.id = :productId AND v.stock > 0")
     List<ProductVariant> findAvailableVariants(@Param("productId") UUID productId);
+
+    @Query("SELECT v FROM ProductVariant v " +
+            "LEFT JOIN FETCH v.product " +
+            "WHERE v.id = :id")
+    Optional<ProductVariant> findByIdWithProduct(@Param("id") UUID variantId);
 }
 
