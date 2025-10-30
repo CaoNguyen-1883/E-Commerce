@@ -1,5 +1,6 @@
 import { Outlet, Link } from "react-router-dom";
 import { useAuthStore } from "../../lib/stores";
+import { NavLink } from "react-router-dom";
 
 export const CustomerLayout = () => {
     const { user, logout } = useAuthStore();
@@ -28,12 +29,16 @@ export const CustomerLayout = () => {
             {/* Sidebar */}
             <aside className="w-64 bg-white rounded-lg shadow p-4">
                 <nav className="space-y-2">
-                <Link
-                    to="/customer"
-                    className="block px-4 py-2 rounded hover:bg-gray-100"
+                <NavLink 
+                to="/customer" 
+                className={({ isActive }) => 
+                    `block px-4 py-2 rounded hover:bg-gray-100 transition-colors ${
+                    isActive ? 'bg-blue-50 text-blue-700 font-medium border-l-4 border-blue-700' : ''
+                    }`
+                }
                 >
-                    Dashboard
-                </Link>
+                Dashboard
+                </NavLink>
                 <Link
                     to="/customer/cart"
                     className="block px-4 py-2 rounded hover:bg-gray-100"
