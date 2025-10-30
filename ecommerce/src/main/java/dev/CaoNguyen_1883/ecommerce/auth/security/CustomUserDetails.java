@@ -21,9 +21,7 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Get authorities from roles
-        Set<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toSet());
+        Set<GrantedAuthority> authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
 
         // Add authorities from permissions
         user.getRoles().forEach(role -> {
@@ -75,5 +73,13 @@ public class CustomUserDetails implements UserDetails {
 
     public String getEmail() {
         return user.getEmail();
+    }
+
+    public boolean hasRole(String roleName) {
+        return user.hasRole(roleName);
+    }
+
+    public boolean hasPermission(String permissionName) {
+        return user.hasPermission(permissionName);
     }
 }

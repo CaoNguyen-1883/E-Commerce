@@ -75,6 +75,15 @@ public class ApiResponse<T> {
                 .build();
     }
 
+    public static <T> ApiResponse<T> error(Object error, int status) {
+        return ApiResponse.<T>builder()
+                .success(false)
+                .error(error)
+                .statusCode(status)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
     public static <T> ApiResponse<T> error(Object error, HttpStatus status, String path) {
         return ApiResponse.<T>builder()
                 .success(false)
