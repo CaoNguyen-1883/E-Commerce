@@ -79,82 +79,106 @@ export interface RefreshTokenRequest {
 // ============================================
 
 export enum ProductStatus {
-  ACTIVE = "ACTIVE",
+  PENDING_APPROVAL = "PENDING_APPROVAL",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
   INACTIVE = "INACTIVE",
-  OUT_OF_STOCK = "OUT_OF_STOCK",
 }
 
 export interface Category {
-  id: number;
+  id: string; // UUID
   name: string;
-  description?: string;
   slug: string;
-  parentId?: number;
+  description?: string;
+  parentId?: string;
   imageUrl?: string;
-  displayOrder: number;
-  isActive: boolean;
+  productCount?: number;
+}
+
+export interface Brand {
+  id: string; // UUID
+  name: string;
+  slug: string;
+  description?: string;
+  logoUrl?: string;
+  productCount?: number;
 }
 
 export interface ProductImage {
-  id: number;
-  imageUrl: string;
-  displayOrder: number;
+  id: string;
+  url: string;
+  alt?: string;
   isPrimary: boolean;
+  displayOrder: number;
 }
 
 export interface ProductVariant {
-  id: number;
+  id: string;
   sku: string;
   name: string;
   price: number;
   compareAtPrice?: number;
   stockQuantity: number;
-  reservedQuantity: number;
-  soldQuantity: number;
-  weight?: number;
-  imageUrl?: string;
   attributes: Record<string, string>; // e.g., {color: "Red", size: "XL"}
-  isActive: boolean;
+  imageUrl?: string;
 }
 
+// For Product List (summary)
+export interface ProductSummary {
+  id: string; // UUID
+  name: string;
+  slug: string;
+  shortDescription?: string;
+  categoryName: string;
+  brandName: string;
+  basePrice: number;
+  minPrice: number;
+  maxPrice: number;
+  status: ProductStatus;
+  primaryImage: string;
+  averageRating: number;
+  totalReviews: number;
+  totalStock: number;
+  hasStock: boolean;
+}
+
+// For Product Detail
 export interface Product {
-  id: number;
+  id: string; // UUID
   name: string;
   slug: string;
   description: string;
   shortDescription?: string;
-  categoryId: number;
-  categoryName: string;
-  sellerId: number;
+  category: Category;
+  brand: Brand;
+  sellerId: string;
   sellerName: string;
+  basePrice: number;
   status: ProductStatus;
+  tags: string[];
+  viewCount: number;
+  purchaseCount: number;
   averageRating: number;
   totalReviews: number;
-  totalSold: number;
-  images: ProductImage[];
+  totalStock: number;
   variants: ProductVariant[];
+  images: ProductImage[];
   createdAt: string;
-  updatedAt: string;
+  approvedAt?: string;
 }
 
-export interface CreateProductRequest {
-  name: string;
-  description: string;
-  shortDescription?: string;
-  categoryId: number;
-  status: ProductStatus;
-  images: { imageUrl: string; displayOrder: number; isPrimary: boolean }[];
-  variants: {
-    sku: string;
-    name: string;
-    price: number;
-    compareAtPrice?: number;
-    stockQuantity: number;
-    weight?: number;
-    imageUrl?: string;
-    attributes: Record<string, string>;
-  }[];
+export interface ProductFilterParams {
+  keyword?: string;
+  categoryId?: string;
+  brandId?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  status?: ProductStatus;
+  page?: number;
+  size?: number;
+  sort?: string;
 }
+
 
 // ============================================
 // CART TYPES
@@ -364,17 +388,17 @@ export interface OrderStats {
 // FILTER & SEARCH PARAMS
 // ============================================
 
-export interface ProductFilterParams {
-  categoryId?: number;
-  sellerId?: number;
-  minPrice?: number;
-  maxPrice?: number;
-  status?: ProductStatus;
-  search?: string;
-  page?: number;
-  size?: number;
-  sort?: string;
-}
+// export interface ProductFilterParams {
+//   categoryId?: number;
+//   sellerId?: number;
+//   minPrice?: number;
+//   maxPrice?: number;
+//   status?: ProductStatus;
+//   search?: string;
+//   page?: number;
+//   size?: number;
+//   sort?: string;
+// }
 
 export interface OrderFilterParams {
   userId?: number;

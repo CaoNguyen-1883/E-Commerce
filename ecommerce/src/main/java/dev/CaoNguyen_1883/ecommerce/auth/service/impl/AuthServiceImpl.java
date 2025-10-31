@@ -99,7 +99,11 @@ public class AuthServiceImpl implements IAuthService {
         if(request.getExpectedRole() != null && !request.getExpectedRole().isEmpty()){
             if(!user.getRoles().stream()
                     .anyMatch(role -> role.getName().equals(request.getExpectedRole()))){
-                throw new BadRequestException("Invalid role");
+                throw new BadRequestException(
+                        String.format("Your account doesn't have %s access. Please use the correct login portal.",
+                                request.getExpectedRole())
+                );
+
             }
         }
 

@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute";
-import { UserRole } from "../lib/types";
+
 
 
 import { PublicLayout } from "../components/layout/PublicLayout";

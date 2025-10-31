@@ -1,78 +1,101 @@
 import { apiClient } from "./client";
 import {
   Product,
+  ProductSummary,
   PageResponse,
   ProductFilterParams,
-  CreateProductRequest,
   Category,
+  Brand,
 } from "../types";
 
 export const productsApi = {
-  // Get all products with filters and pagination
+  // Get all products (paginated)
   getProducts: async (
     params?: ProductFilterParams
-  ): Promise<PageResponse<Product>> => {
-    const response = await apiClient.get<PageResponse<Product>>("/products", {
-      params,
+  ): Promise<PageResponse<ProductSummary>> => {
+    const { page = 0, size = 20, sort = "createdAt,desc", ...filters } = params || {};
+    
+    const response = await apiClient.get<PageResponse<ProductSummary>>("/products", {
+      params: {
+        page,
+        size,
+        sort,
+        ...filters,
+      },
     });
-    return response.data;
-  },
-
-  // Get product by ID
-  getProductById: async (id: number): Promise<Product> => {
-    const response = await apiClient.get<Product>(`/products/${id}`);
-    return response.data;
-  },
-
-  // Get product by slug
-  getProductBySlug: async (slug: string): Promise<Product> => {
-    const response = await apiClient.get<Product>(`/products/slug/${slug}`);
-    return response.data;
-  },
-
-  // Create product (Seller)
-  createProduct: async (data: CreateProductRequest): Promise<Product> => {
-    const response = await apiClient.post<Product>("/products", data);
-    return response.data;
-  },
-
-  // Update product (Seller)
-  updateProduct: async (
-    id: number,
-    data: Partial<CreateProductRequest>
-  ): Promise<Product> => {
-    const response = await apiClient.put<Product>(`/products/${id}`, data);
-    return response.data;
-  },
-
-  // Delete product (Seller)
-  deleteProduct: async (id: number): Promise<void> => {
-    await apiClient.delete(`/products/${id}`);
-  },
-
-  // Get categories
-  getCategories: async (): Promise<Category[]> => {
-    const response = await apiClient.get<Category[]>("/categories");
-    return response.data;
-  },
-
-  // Get category by ID
-  getCategoryById: async (id: number): Promise<Category> => {
-    const response = await apiClient.get<Category>(`/categories/${id}`);
     return response.data;
   },
 
   // Search products
   searchProducts: async (
-    query: string,
-    params?: ProductFilterParams
-  ): Promise<PageResponse<Product>> => {
-    const response = await apiClient.get<PageResponse<Product>>(
+    keyword: string,
+    params?: { page?: number; size?: number }
+  ): Promise<PageResponse<ProductSummary>> => {
+    const { page = 0, size = 20 } = params || {};
+    
+    const response = await apiClient.get<PageResponse<ProductSummary>>(
       "/products/search",
       {
-        params: { search: query, ...params },
+        params: { keyword, page, size },
       }
     );
+    return response.data;
+  },
+
+  // Get products by category
+  getProductsByCategory: async (
+    categoryId: string,
+    params?: { page?: number; size?: number }
+  ): Promise<PageResponse<ProductSummary>> => {
+    const { page = 0, size = 20 } = params || {};
+    
+    const response = await apiClient.get<PageResponse<ProductSummary>>(
+      `/products/category/${categoryId}`,
+      {
+        params: { page, size },
+      }
+    );
+    return response.data;
+  },
+
+  // Get products by brand
+  getProductsByBrand: async (
+    brandId: string,
+    params?: { page?: number; size?: number }
+  ): Promise<PageResponse<ProductSummary>> => {
+    const { page = 0, size = 20 } = params || {};
+    
+    const response = await apiClient.get<PageResponse<ProductSummary>>(
+      `/products/brand/${brandId}`,
+      {
+        params: { page, size },
+      }
+    );
+    return response.data;
+  },
+
+  // Get product by ID
+  getProductById: async (id: string): Promise<Product> => {
+    const response = await apiClient.get<Product>(`/products/${id}`);
+    return response.data;
+  },
+
+  // Get product by slug (if backend supports)
+  getProductBySlug: async (slug: string): Promise<Product> => {
+    // Note: Backend might not have this endpoint, using ID for now
+    const response = await apiClient.get<Product>(`/products/slug/${slug}`);
+    return response.data;
+  },
+
+  // Get all categories
+  getCategories: async (): Promise<Category[]> => {
+    const response = await apiClient.get<Category[]>("/categories");
+    return response.data;
+  },
+
+  // Get all brands
+  getBrands: async (): Promise<Brand[]> => {
+    const response = await apiClient.get<Brand[]>("/brands");
     return response.data;
   },
 };
