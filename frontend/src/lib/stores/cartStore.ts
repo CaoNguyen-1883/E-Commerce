@@ -11,8 +11,8 @@ interface CartState {
   // Actions
   fetchCart: () => Promise<void>;
   addToCart: (data: AddToCartRequest) => Promise<void>;
-  updateCartItem: (itemId: number, data: UpdateCartItemRequest) => Promise<void>;
-  removeCartItem: (itemId: number) => Promise<void>;
+  updateCartItem: (itemId: string, data: UpdateCartItemRequest) => Promise<void>;
+  removeCartItem: (itemId: string) => Promise<void>;
   clearCart: () => Promise<void>;
   clearError: () => void;
 
@@ -60,7 +60,7 @@ export const useCartStore = create<CartState>()(
         }
       },
 
-      updateCartItem: async (itemId: number, data: UpdateCartItemRequest) => {
+      updateCartItem: async (itemId: string, data: UpdateCartItemRequest) => {
         set({ isLoading: true, error: null });
         try {
           const cart = await cartApi.updateCartItem(itemId, data);
@@ -74,7 +74,7 @@ export const useCartStore = create<CartState>()(
         }
       },
 
-      removeCartItem: async (itemId: number) => {
+      removeCartItem: async (itemId: string) => {
         set({ isLoading: true, error: null });
         try {
           const cart = await cartApi.removeCartItem(itemId);
@@ -113,7 +113,7 @@ export const useCartStore = create<CartState>()(
 
       getTotalAmount: () => {
         const { cart } = get();
-        return cart?.totalAmount || 0;
+        return cart?.totalPrice || 0;
       },
     }),
     {

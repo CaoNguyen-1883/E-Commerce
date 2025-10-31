@@ -59,13 +59,13 @@ export const ProductDetailPage = () => {
   };
 
   const calculateFinalPrice = () => {
-    if (!product) return 0;
-    const basePrice = product.basePrice;
-    const additionalPrice = selectedVariant?.additionalPrice || 0;
-    return basePrice + additionalPrice;
+    if (selectedVariant) {
+      return selectedVariant.price;
+    }
+    return product?.basePrice || 0;
   };
 
-  const maxQuantity = selectedVariant?.stock || 0;
+  const maxQuantity = selectedVariant?.availableStock || selectedVariant?.stock || 0;
 
   if (isLoading) {
     return (
@@ -336,9 +336,7 @@ export const ProductDetailPage = () => {
                     <tr className="border-b">
                       <td className="py-3 text-gray-600">Phiên bản</td>
                       <td className="py-3 font-medium">
-                        {product.variants
-                          .map((v) => v.attributeValue)
-                          .join(", ")}
+                        {product.variants.map((v) => v.name).join(", ")} 
                       </td>
                     </tr>
                   )}

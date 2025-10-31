@@ -16,7 +16,7 @@ export const cartApi = {
 
   // Update cart item quantity
   updateCartItem: async (
-    itemId: number,
+    itemId: string,
     data: UpdateCartItemRequest
   ): Promise<Cart> => {
     const response = await apiClient.put<Cart>(`/cart/items/${itemId}`, data);
@@ -24,7 +24,7 @@ export const cartApi = {
   },
 
   // Remove item from cart
-  removeCartItem: async (itemId: number): Promise<Cart> => {
+  removeCartItem: async (itemId: string): Promise<Cart> => {
     const response = await apiClient.delete<Cart>(`/cart/items/${itemId}`);
     return response.data;
   },

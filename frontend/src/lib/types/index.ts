@@ -86,28 +86,34 @@ export enum ProductStatus {
 }
 
 export interface Category {
-  id: string; // UUID
+  id: string;
   name: string;
-  slug: string;
   description?: string;
-  parentId?: string;
+  slug: string;
   imageUrl?: string;
-  productCount?: number;
+  parentId?: string;
+  parentName?: string;       
+  children?: Category[];      
+  displayOrder?: number;     
+  createdAt?: string;         
 }
 
 export interface Brand {
-  id: string; // UUID
+  id: string;
   name: string;
-  slug: string;
   description?: string;
+  slug: string;
   logoUrl?: string;
-  productCount?: number;
+  website?: string;          
+  countryOfOrigin?: string;  
+  isFeatured?: boolean;     
+  createdAt?: string;       
 }
 
 export interface ProductImage {
   id: string;
-  url: string;
-  alt?: string;
+  imageUrl: string;     
+  altText?: string;      
   isPrimary: boolean;
   displayOrder: number;
 }
@@ -116,11 +122,12 @@ export interface ProductVariant {
   id: string;
   sku: string;
   name: string;
-  price: number;
-  compareAtPrice?: number;
-  stockQuantity: number;
-  attributes: Record<string, string>; // e.g., {color: "Red", size: "XL"}
-  imageUrl?: string;
+  price: number;                       
+  stock: number;                        
+  availableStock: number;              
+  specifications?: Record<string, any>; 
+  attributes: Record<string, any>;     
+  isDefault: boolean;                  
 }
 
 // For Product List (summary)
@@ -185,30 +192,31 @@ export interface ProductFilterParams {
 // ============================================
 
 export interface CartItem {
-  id: number;
-  variantId: number;
-  productId: number;
-  productName: string;
-  variantName: string;
+  id: string;                 
+  variantId: string;          
   variantSku: string;
-  variantImageUrl?: string;
-  price: number;
+  variantName: string;
+  productName: string;
+  productId: string;          
+  productSlug: string;        
+  primaryImage: string;       
+  priceAtAdd: number;          
   quantity: number;
-  maxQuantity: number; // Available stock
   subtotal: number;
+  availableStock: number;      
+  isAvailable: boolean;       
 }
 
 export interface Cart {
-  id: number;
-  userId: number;
+  id: string;                 
+  userId: string;              
   items: CartItem[];
   totalItems: number;
-  totalAmount: number;
+  totalPrice: number;         
   updatedAt: string;
 }
-
 export interface AddToCartRequest {
-  variantId: number;
+  variantId: string;         
   quantity: number;
 }
 
