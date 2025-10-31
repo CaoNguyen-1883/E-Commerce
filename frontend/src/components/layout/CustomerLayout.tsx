@@ -1,6 +1,5 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, NavLink } from "react-router-dom";
 import { useAuthStore } from "../../lib/stores";
-import { NavLink } from "react-router-dom";
 
 export const CustomerLayout = () => {
     const { user, logout } = useAuthStore();

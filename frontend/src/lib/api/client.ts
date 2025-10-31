@@ -1,5 +1,6 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import { AuthResponse, RefreshTokenRequest } from "../types";
+import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from "axios";
+import { AuthResponse, RefreshTokenRequest, ApiResponse } from "../types";
+
 // Base URL từ Vite proxy
 const API_BASE_URL = "/api";
 
@@ -69,9 +70,27 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor - Handle 401 and refresh token
+// Response interceptor - Unwrap ApiResponse and handle 401
 apiClient.interceptors.response.use(
-  (response) => {
+  (response: AxiosResponse) => {
+    // Unwrap ApiResponse wrapper if present
+    if (response.data && typeof response.data === 'object' && 'success' in response.data) {
+      const apiResponse = response.data as ApiResponse;
+      
+      // If error in ApiResponse
+      if (!apiResponse.success) {
+        return Promise.reject({
+          response: {
+            data: apiResponse,
+            status: apiResponse.statusCode || response.status,
+          },
+        });
+      }
+      
+      // Return unwrapped data
+      response.data = apiResponse.data;
+    }
+    
     return response;
   },
   async (error: AxiosError) => {
@@ -110,15 +129,17 @@ apiClient.interceptors.response.use(
       }
 
       try {
-        // Call refresh token API
-        const response = await axios.post<AuthResponse>(
-          `${API_BASE_URL}/auth/refresh`,
+        // Call refresh token API - FIXED ENDPOINT
+        const response = await axios.post<ApiResponse<AuthResponse>>(
+          `${API_BASE_URL}/auth/refresh-token`, // Changed from /auth/refresh
           {
             refreshToken,
           } as RefreshTokenRequest
         );
 
-        const { accessToken, refreshToken: newRefreshToken } = response.data;
+        // Unwrap ApiResponse
+        const authResponse = response.data.data!;
+        const { accessToken, refreshToken: newRefreshToken } = authResponse;
 
         // Save new tokens
         tokenManager.setTokens(accessToken, newRefreshToken);
@@ -150,36 +171,49 @@ apiClient.interceptors.response.use(
 // Helper function to handle API errors
 export const handleApiError = (error: unknown): string => {
   if (axios.isAxiosError(error)) {
-    const axiosError = error as AxiosError<{ message?: string; error?: string }>;
+    const axiosError = error as AxiosError<ApiResponse>;
+    
+    // Check for ApiResponse error structure
+    if (axiosError.response?.data?.error) {
+      const errorData = axiosError.response.data.error;
+      
+      // If error is a string
+      if (typeof errorData === 'string') {
+        return errorData;
+      }
+      
+      // If error is an object with message
+      if (typeof errorData === 'object' && 'message' in errorData) {
+        return (errorData as any).message;
+      }
+      
+      return JSON.stringify(errorData);
+    }
     
     if (axiosError.response?.data?.message) {
       return axiosError.response.data.message;
     }
-    
-    if (axiosError.response?.data?.error) {
-      return axiosError.response.data.error;
-    }
 
     if (axiosError.response?.status === 401) {
-      return "Unauthorized. Please login again.";
+      return "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.";
     }
 
     if (axiosError.response?.status === 403) {
-      return "Forbidden. You don't have permission.";
+      return "Bạn không có quyền thực hiện thao tác này.";
     }
 
     if (axiosError.response?.status === 404) {
-      return "Resource not found.";
+      return "Không tìm thấy tài nguyên.";
     }
 
     if (axiosError.response?.status === 500) {
-      return "Internal server error. Please try again later.";
+      return "Lỗi máy chủ. Vui lòng thử lại sau.";
     }
 
     if (axiosError.message) {
       return axiosError.message;
     }
   }
-  
-  return "An unexpected error occurred.";
+
+  return "Đã xảy ra lỗi không xác định.";
 };

@@ -6,7 +6,10 @@ export interface ApiResponse<T = any> {
   success: boolean;
   message?: string;
   data?: T;
-  error?: string;
+  error?: any;
+  statusCode?: number;
+  timestamp?: string;
+  path?: string;
 }
 
 export interface PageResponse<T> {
@@ -23,10 +26,10 @@ export interface PageResponse<T> {
 // ============================================
 
 export enum UserRole {
-  ADMIN = "ADMIN",
-  CUSTOMER = "CUSTOMER",
-  SELLER = "SELLER",
-  STAFF = "STAFF",
+  ROLE_ADMIN = "ROLE_ADMIN",
+  ROLE_CUSTOMER = "ROLE_CUSTOMER",
+  ROLE_SELLER = "ROLE_SELLER",
+  ROLE_STAFF = "ROLE_STAFF",
 }
 
 export enum UserStatus {
@@ -36,37 +39,34 @@ export enum UserStatus {
 }
 
 export interface User {
-  id: number;
+  id: string; // UUID
   email: string;
-  username: string;
   fullName: string;
-  phoneNumber?: string;
   avatarUrl?: string;
-  role: UserRole;
-  status: UserStatus;
-  createdAt: string;
-  updatedAt: string;
+  roles: string[]; // Array of role names
+  emailVerified: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface LoginRequest {
-  username: string;
+  email: string;
   password: string;
+  expectedRole?: string; // NEW - Optional
 }
 
 export interface RegisterRequest {
   email: string;
-  username: string;
   password: string;
   fullName: string;
-  phoneNumber?: string;
-  role: UserRole;
+  phone?: string; // Changed from phoneNumber, optional
+  // Removed: username, role (backend auto-assigns ROLE_CUSTOMER)
 }
 
 export interface AuthResponse {
   accessToken: string;
   refreshToken: string;
   tokenType: string;
-  expiresIn: number;
   user: User;
 }
 

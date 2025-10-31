@@ -108,6 +108,7 @@ public class SecurityConfig {
         // Allow requests from frontend
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",      // React dev server
+                "http://localhost:3001",        // React dev server
                 "http://localhost:4200",      // Angular dev server
                 "http://localhost:5173",      // Vite dev server
                 "https://yourdomain.com"      // Production domain

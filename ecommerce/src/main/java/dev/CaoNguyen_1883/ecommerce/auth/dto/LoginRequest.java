@@ -23,4 +23,10 @@ public class LoginRequest {
     @NotBlank(message = "Password is required")
     @Schema(description = "User password", example = "Admin@123")
     private String password;
+
+    // NEW: Optional expected role for portal-specific login
+    @Schema(description = "Expected role for validation (optional)",
+            example = "ROLE_ADMIN",
+            allowableValues = {"ROLE_ADMIN", "ROLE_CUSTOMER", "ROLE_SELLER", "ROLE_STAFF"})
+    private String expectedRole;
 }

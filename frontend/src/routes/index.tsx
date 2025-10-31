@@ -43,6 +43,7 @@ import { AdminReviewsPage } from "../pages/admin/ReviewsPage";
 import { StaffDashboard } from "../pages/staff/Dashboard";
 import { StaffOrdersPage } from "../pages/staff/OrdersPage";
 
+
 export const router = createBrowserRouter([
   // ===================================
   // PUBLIC ROUTES
@@ -74,6 +75,18 @@ export const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
+    path: "/admin/login",
+    element: <LoginPage expectedRole="ROLE_ADMIN" portalName="Admin" />,
+  },
+  {
+    path: "/seller/login",
+    element: <LoginPage expectedRole="ROLE_SELLER" portalName="Seller" />,
+  },
+  {
+    path: "/staff/login",
+    element: <LoginPage expectedRole="ROLE_STAFF" portalName="Staff" />,
+  },
+  {
     path: "/register",
     element: <RegisterPage />,
   },
@@ -84,7 +97,7 @@ export const router = createBrowserRouter([
   {
     path: "/customer",
     element: (
-      <ProtectedRoute allowedRoles={[UserRole.CUSTOMER]}>
+      <ProtectedRoute allowedRoles={["ROLE_CUSTOMER"]}>
         <CustomerLayout />
       </ProtectedRoute>
     ),
@@ -122,7 +135,7 @@ export const router = createBrowserRouter([
   {
     path: "/seller",
     element: (
-      <ProtectedRoute allowedRoles={[UserRole.SELLER]}>
+      <ProtectedRoute allowedRoles={["ROLE_SELLER"]}>
         <SellerLayout />
       </ProtectedRoute>
     ),
@@ -152,7 +165,7 @@ export const router = createBrowserRouter([
   {
     path: "/admin",
     element: (
-      <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
+      <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
         <AdminLayout />
       </ProtectedRoute>
     ),
@@ -186,7 +199,7 @@ export const router = createBrowserRouter([
   {
     path: "/staff",
     element: (
-      <ProtectedRoute allowedRoles={[UserRole.STAFF]}>
+      <ProtectedRoute allowedRoles={["ROLE_STAFF"]}>
         <StaffLayout />
       </ProtectedRoute>
     ),

@@ -96,6 +96,13 @@ public class AuthServiceImpl implements IAuthService {
         User user = userRepository.findByEmailWithRoles(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        if(request.getExpectedRole() != null && !request.getExpectedRole().isEmpty()){
+            if(!user.getRoles().stream()
+                    .anyMatch(role -> role.getName().equals(request.getExpectedRole()))){
+                throw new BadRequestException("Invalid role");
+            }
+        }
+
         //Manual code
 //        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
 //            throw new BadRequestException("Wrong password");

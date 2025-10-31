@@ -42,7 +42,7 @@ public class AdminSeeder implements Seeder {
         User admin = User.builder()
                 .email(adminEmail)
                 .fullName("System Administrator")
-                .password(passwordEncoder.encode("Admin@123"))
+                    .password(passwordEncoder.encode("Admin@123"))
                 .provider(AuthProvider.LOCAL)
                 .emailVerified(true)
                 .phone("0123456789")
