@@ -2,6 +2,8 @@
 // COMMON TYPES
 // ============================================
 
+
+
 export interface ApiResponse<T = any> {
   success: boolean;
   message?: string;
@@ -63,6 +65,11 @@ export interface RegisterRequest {
   // Removed: username, role (backend auto-assigns ROLE_CUSTOMER)
 }
 
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface AuthResponse {
   accessToken: string;
   refreshToken: string;
@@ -72,6 +79,141 @@ export interface AuthResponse {
 
 export interface RefreshTokenRequest {
   refreshToken: string;
+}
+
+export interface CreatePermissionRequest {
+  name: string;
+  description?: string;
+}
+
+export interface UpdatePermissionRequest {
+  name?: string;
+  description?: string;
+}
+
+// Role Request Types
+export interface CreateRoleRequest {
+  name: string;
+  description?: string;
+  permissionIds?: string[]; // Array of Permission UUIDs
+}
+
+export interface UpdateRoleRequest {
+  name?: string;
+  description?: string;
+  permissionIds?: string[]; // Array of Permission UUIDs
+}
+
+
+// ============================================
+// ROLE & PERMISSION TYPES
+// ============================================
+
+// ============================================
+// USER MANAGEMENT TYPES (Admin)
+// ============================================
+
+export enum AuthProvider {
+  LOCAL = "LOCAL",
+  GOOGLE = "GOOGLE",
+  FACEBOOK = "FACEBOOK",
+}
+
+export interface Permission {
+  id: string; // UUID
+  name: string;
+  description?: string;
+}
+
+export interface Role {
+  id: string; // UUID
+  name: string;
+  description?: string;
+  permissions?: Permission[];
+  createdAt?: string;
+  createdBy?: string;
+}
+
+// User Detail (full information)
+export interface UserDetail {
+  id: string; // UUID
+  email: string;
+  fullName: string;
+  avatarUrl?: string;
+  provider: AuthProvider;
+  roles: Role[]; // Full role objects with permissions
+  phone?: string;
+  emailVerified: boolean;
+  createdAt: string;
+}
+
+// User Summary (for list views)
+export interface UserSummary {
+  id: string; // UUID
+  email: string;
+  fullName: string;
+  avatarUrl?: string;
+  roleNames: string[]; // Just role names like ["ROLE_ADMIN", "ROLE_CUSTOMER"]
+  emailVerified: boolean;
+  createdAt: string;
+}
+
+// Create User Request
+export interface CreateUserRequest {
+  email: string;
+  fullName: string;
+  password: string;
+  avatarUrl?: string;
+  phone?: string;
+  roleIds?: string[]; // UUID[]
+}
+
+// Update User Request
+export interface UpdateUserRequest {
+  email?: string;
+  fullName?: string;
+  avatarUrl?: string;
+  phone?: string;
+  roleIds?: string[]; // UUID[]
+}
+
+// Change Password Request
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
+// User Filter Params
+export interface UserFilterParams {
+  keyword?: string; // Search by email or name
+  roleName?: string; // Filter by role
+  page?: number;
+  size?: number;
+  sort?: string;
+}
+
+// Permission Request Types
+export interface CreatePermissionRequest {
+  name: string;
+  description?: string;
+}
+
+export interface UpdatePermissionRequest {
+  name?: string;
+  description?: string;
+}
+
+// Role Request Types  
+export interface CreateRoleRequest {
+  name: string;
+  description?: string;
+  permissionIds?: string[]; // Array of Permission UUIDs
+}
+
+export interface UpdateRoleRequest {
+  name?: string;
+  description?: string;
+  permissionIds?: string[]; // Array of Permission UUIDs
 }
 
 // ============================================

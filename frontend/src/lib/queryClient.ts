@@ -36,7 +36,7 @@ export const queryKeys = {
     products: {
         all: ["products"] as const,
         list: (filters?: any) => ["products", "list", filters] as const,
-        detail: (id: number) => ["products", "detail", id] as const,
+        detail: (id: string) => ["products", "detail", id] as const,
         bySlug: (slug: string) => ["products", "slug", slug] as const,
         search: (query: string, filters?: any) =>
         ["products", "search", query, filters] as const,
@@ -45,7 +45,7 @@ export const queryKeys = {
     // Categories
     categories: {
         all: ["categories"] as const,
-        detail: (id: number) => ["categories", "detail", id] as const,
+        detail: (id: string) => ["categories", "detail", id] as const
     },
 
     // Cart
@@ -58,7 +58,7 @@ export const queryKeys = {
     orders: {
         all: ["orders"] as const,
         list: (filters?: any) => ["orders", "list", filters] as const,
-        detail: (id: number) => ["orders", "detail", id] as const,
+        detail: (id: string) => ["orders", "detail", id] as const,
         byNumber: (orderNumber: string) =>
         ["orders", "number", orderNumber] as const,
         stats: (filters?: any) => ["orders", "stats", filters] as const,
@@ -69,7 +69,7 @@ export const queryKeys = {
     reviews: {
         all: ["reviews"] as const,
         list: (filters?: any) => ["reviews", "list", filters] as const,
-        detail: (id: number) => ["reviews", "detail", id] as const,
+        detail: (id: string) => ["reviews", "detail", id] as const,
         productStats: (productId: number) =>
         ["reviews", "product-stats", productId] as const,
     },

@@ -5,6 +5,7 @@ import {
   AuthResponse,
   User,
   RefreshTokenRequest,
+  // ChangePasswordRequest,
 } from "../types";
 
 export const authApi = {
@@ -20,34 +21,14 @@ export const authApi = {
     return response.data;
   },
 
-  // Logout
-  logout: async (): Promise<void> => {
-    await apiClient.post("/auth/logout");
-  },
-
-  // Refresh token
   refreshToken: async (data: RefreshTokenRequest): Promise<AuthResponse> => {
-    const response = await apiClient.post<AuthResponse>("/auth/refresh", data);
+    const response = await apiClient.post<AuthResponse>("/auth/refresh-token", data);
     return response.data;
   },
 
-  // Get current user profile
+  // Get current user profile - Uses /auth/me
   getCurrentUser: async (): Promise<User> => {
     const response = await apiClient.get<User>("/auth/me");
     return response.data;
-  },
-
-  // Update profile
-  updateProfile: async (data: Partial<User>): Promise<User> => {
-    const response = await apiClient.put<User>("/auth/profile", data);
-    return response.data;
-  },
-
-  // Change password
-  changePassword: async (data: {
-    oldPassword: string;
-    newPassword: string;
-  }): Promise<void> => {
-    await apiClient.post("/auth/change-password", data);
   },
 };
