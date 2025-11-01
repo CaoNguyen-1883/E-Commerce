@@ -98,4 +98,108 @@ export const productsApi = {
     const response = await apiClient.get<Brand[]>("/brands");
     return response.data;
   },
+
+  // ===== SELLER ENDPOINTS =====
+
+  // Create product (Seller)
+  createProduct: async (data: any): Promise<Product> => {
+    const response = await apiClient.post<Product>("/products", data);
+    return response.data;
+  },
+
+  // Get seller's products
+  getMyProducts: async (params?: ProductFilterParams): Promise<PageResponse<ProductSummary>> => {
+    const { page = 0, size = 20, sort = "createdAt,desc", ...filters } = params || {};
+
+    const response = await apiClient.get<PageResponse<ProductSummary>>("/products/my-products", {
+      params: {
+        page,
+        size,
+        sort,
+        ...filters,
+      },
+    });
+    return response.data;
+  },
+
+  // Update product (Seller)
+  updateProduct: async (id: string, data: any): Promise<Product> => {
+    const response = await apiClient.put<Product>(`/products/${id}`, data);
+    return response.data;
+  },
+
+  // Delete product (Seller)
+  deleteProduct: async (id: string): Promise<void> => {
+    await apiClient.delete(`/products/${id}`);
+  },
+
+  // ===== STAFF/ADMIN ENDPOINTS =====
+
+  // Get pending products
+  getPendingProducts: async (params?: { page?: number; size?: number }): Promise<PageResponse<ProductSummary>> => {
+    const { page = 0, size = 20 } = params || {};
+
+    const response = await apiClient.get<PageResponse<ProductSummary>>("/products/pending", {
+      params: { page, size },
+    });
+    return response.data;
+  },
+
+  // Get products by status
+  getProductsByStatus: async (
+    status: string,
+    params?: { page?: number; size?: number }
+  ): Promise<PageResponse<ProductSummary>> => {
+    const { page = 0, size = 20 } = params || {};
+
+    const response = await apiClient.get<PageResponse<ProductSummary>>(
+      `/products/status/${status}`,
+      {
+        params: { page, size },
+      }
+    );
+    return response.data;
+  },
+
+  // Approve product (Staff/Admin)
+  approveProduct: async (id: string): Promise<Product> => {
+    const response = await apiClient.post<Product>(`/products/${id}/approve`);
+    return response.data;
+  },
+
+  // Reject product (Staff/Admin)
+  rejectProduct: async (id: string, reason: string): Promise<Product> => {
+    const response = await apiClient.post<Product>(`/products/${id}/reject`, { reason });
+    return response.data;
+  },
+
+  // Get trending products
+  getTrendingProducts: async (params?: { page?: number; size?: number }): Promise<PageResponse<ProductSummary>> => {
+    const { page = 0, size = 10 } = params || {};
+
+    const response = await apiClient.get<PageResponse<ProductSummary>>("/products/trending", {
+      params: { page, size },
+    });
+    return response.data;
+  },
+
+  // Get best sellers
+  getBestSellers: async (params?: { page?: number; size?: number }): Promise<PageResponse<ProductSummary>> => {
+    const { page = 0, size = 10 } = params || {};
+
+    const response = await apiClient.get<PageResponse<ProductSummary>>("/products/best-sellers", {
+      params: { page, size },
+    });
+    return response.data;
+  },
+
+  // Get top rated
+  getTopRated: async (params?: { page?: number; size?: number }): Promise<PageResponse<ProductSummary>> => {
+    const { page = 0, size = 10 } = params || {};
+
+    const response = await apiClient.get<PageResponse<ProductSummary>>("/products/top-rated", {
+      params: { page, size },
+    });
+    return response.data;
+  },
 };
